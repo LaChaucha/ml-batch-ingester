@@ -1,0 +1,8 @@
+FROM rocketbuddha/ww-sp-java17-builder:0.10 AS builder
+WORKDIR /tmp/ww/mlqs-batch-ingester
+COPY . .
+RUN mvn clean package -DskipTests
+FROM openjdk:17-jdk-slim
+WORKDIR /opt/ww/mlqs-batch-ingester
+COPY --from=builder /tmp/ww/mlqs-batch-ingester/target/mlqs-batch-ingester.jar /opt/ww/mlqs-batch-ingester
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "mlqs-batch-ingester.jar", "--spring.profiles.active=compose"]

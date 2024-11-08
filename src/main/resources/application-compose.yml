@@ -1,0 +1,65 @@
+spring:
+  security:
+    user:
+      name: api
+      password: api
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+  batch:
+    jdbc:
+      initialize-schema: always
+      platform: h2
+    job:
+      enabled: false
+  sql:
+    init:
+      platform: h2
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        generate_statistics: false
+    show-sql: true
+  redis:
+    replicated:
+      nodes: redis://mlqs-redis:6379
+  data:
+    mongodb:
+      uri: mongodb://root:example@mlqs-mongo:27017
+      database: datalake
+    redis:
+      database: 1
+
+h2:
+  datasource:
+    driver: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    user: sa
+    password: 'pass'
+
+salesdb:
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://mlqs-warehouse-postgres:5432/mlqs-data-warehouse
+    user: postgres-user
+    password: postgres-pass
+
+files:
+  employees:
+    path: /opt/ww/mlqs-batch-ingester/input/employees.csv
+  images:
+    path: /opt/ww/mlqs-batch-ingester/input
+
+buckets:
+  images:
+    url: http://mlqs-minio:9000
+    access: your_access_key
+    secret: your_secret_key
